@@ -38,7 +38,7 @@ sendButton.addEventListener('click', function() {
       pass: pass,
       email: email,
     });
-   else {alert("username , server and message")};
+
     // Clear input fields
     // nameInput.value = '';
     messageInput.value = '';
