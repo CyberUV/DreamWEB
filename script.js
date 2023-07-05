@@ -33,11 +33,15 @@ const firebaseConfig = {
          html += "<button data-id = '" + snapshot.key + "' onclick='deleteMessage(this);' >";
          html += "Delete";
          html += "</button>";
-       }
-    html += snapshot.val().sender + ": " + snapshot.val().message;
-    html += "</li>";
 
-    document.getElementById('messages').innerHTML += html;
+         
+        }
+        html += snapshot.val().sender + ": " + snapshot.val().message;
+        html += "</li>";
+        
+        document.getElementById('messages').innerHTML += html;
+        var idName = "message-"+ snapshot.key ;
+        styleId = document.getElementById(idName);
   });
 
 
