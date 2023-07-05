@@ -15,21 +15,28 @@ firebase.initializeApp(firebaseConfig);
 // Get references to DOM elements
 const serverInput = document.getElementById('server-input');
 const nameInput = document.getElementById('name-input');
+const emailInput = document.getElementById('email-input');
+const passInput = document.getElementById('pass-input');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const messageContainer = document.getElementById('message-container');
 
 // Send button click event handler
 sendButton.addEventListener('click', function() {
-  const serverName = serverInput.value;
-  const name = nameInput.value;
+  const serverName = serverInput.value.trim().toLowerCase();
+  const email = emailInput.value;
+  const pass = passInput.value;
+  const name = nameInput.value.trim();
+ 
   const message = messageInput.value;
 
   if (serverName && name && message) {
     const serverRef = firebase.database().ref(serverName);
     serverRef.push().set({
       name: name,
-      message: message
+      message: message,
+      pass: pass,
+      email: email,
     });
 
     // Clear input fields
@@ -40,7 +47,7 @@ sendButton.addEventListener('click', function() {
 
 // Realtime listener for server messages
 serverInput.addEventListener('change', function() {
-  const serverName = serverInput.value;
+  let serverName = serverInput.value.trim().toLowerCase();
 
   // Clear message container
   messageContainer.innerHTML = '';
@@ -50,6 +57,7 @@ serverInput.addEventListener('change', function() {
     serverRef.on('child_added', function(snapshot) {
       const message = snapshot.val();
       displayMessage(message.name, message.message);
+      scrollToBottom();
     });
   }
 });
@@ -74,11 +82,17 @@ serverInput.addEventListener('change', function() {
 function displayMessage(name, message) {
   const messageElement = document.createElement('div');
 
+  messageElement.classList.add('all-message');
   // Check if the sender's name matches your name
   if (name === nameInput.value) {
+    
     messageElement.classList.add('my-message'); // Add a custom class for your messages
   }
-
-  messageElement.innerHTML = `<strong>${name}:</strong> ${message}`;
+  
+  messageElement.innerHTML = `<strong class="meesa">${name} :</strong>   ${message}`;
   messageContainer.appendChild(messageElement);
+}
+
+function scrollToBottom() {
+  messageContainer.scrollTop = messageContainer.scrollHeight;
 }
